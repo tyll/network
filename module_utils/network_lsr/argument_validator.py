@@ -548,6 +548,32 @@ class ArgValidator_DictBond(ArgValidatorDict):
         return {"mode": ArgValidator_DictBond.VALID_MODES[0], "miimon": None}
 
 
+class ArgValidator_DictTeam(ArgValidatorDict):
+    VALID_RUNNERS = (
+        "activebackup",
+        "broadcast",
+        "lacp",
+        "loadbalance",
+        "random",
+        "roundrobin",
+    )
+
+    def __init__(self):
+        ArgValidatorDict.__init__(
+            self,
+            name="team",
+            nested=[
+                ArgValidatorStr(
+                    "runner", enum_values=ArgValidator_DictTeam.VALID_RUNNERS
+                )
+            ],
+            default_value=ArgValidator.MISSING,
+        )
+
+    def get_default_team(self):
+        return {"runner": "roundrobin"}
+
+
 class ArgValidator_DictInfiniband(ArgValidatorDict):
     def __init__(self):
         ArgValidatorDict.__init__(
@@ -667,6 +693,7 @@ class ArgValidator_DictConnection(ArgValidatorDict):
                 ArgValidator_DictIP(),
                 ArgValidator_DictEthernet(),
                 ArgValidator_DictBond(),
+                ArgValidator_DictTeam(),
                 ArgValidator_DictInfiniband(),
                 ArgValidator_DictVlan(),
                 ArgValidator_DictMacvlan(),
@@ -995,6 +1022,17 @@ class ArgValidator_DictConnection(ArgValidatorDict):
                     raise ValidationError(
                         name + ".bond",
                         "'bond' settings are not allowed for 'type' '%s'"
+                        % (result["type"]),
+                    )
+
+            if result["type"] == "team":
+                if "team" not in result:
+                    result["team"] = self.nested["team"].get_default_team()
+            else:
+                if "team" in result:
+                    raise ValidationError(
+                        name + ".team",
+                        "'team' settings are not allowed for 'type' '%s'"
                         % (result["type"]),
                     )
 

@@ -791,6 +791,11 @@ class NMUtil:
                 s_bond.add_option("miimon", str(connection["bond"]["miimon"]))
         elif connection["type"] == "team":
             s_con.set_property(NM.SETTING_CONNECTION_TYPE, NM.SETTING_TEAM_SETTING_NAME)
+            if "team" in connection:
+                s_team = self.connection_ensure_setting(con, NM.SettingTeam)
+                for key, value in connection["team"].items():
+                    if key == "runner":
+                        s_team.props.runner = value
         elif connection["type"] == "vlan":
             s_con.set_property(NM.SETTING_CONNECTION_TYPE, NM.SETTING_VLAN_SETTING_NAME)
             s_vlan = self.connection_ensure_setting(con, NM.SettingVlan)

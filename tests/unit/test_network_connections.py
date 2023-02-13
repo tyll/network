@@ -2645,7 +2645,7 @@ class TestValidator(Python26CompatTestCase):
                         "DEVICE": "555",
                     },
                     "keys": None,
-                    "route": "192.168.45.0/24 metric 545\n192.168.46.0/30\n",
+                    "route": "192.168.45.0/24 dev 555 metric 545\n192.168.46.0/30 dev 555\n",
                     "route6": None,
                     "rule": None,
                     "rule6": None,
@@ -2766,7 +2766,7 @@ class TestValidator(Python26CompatTestCase):
                 {
                     "ifcfg": "",
                     "keys": None,
-                    "route": "192.168.40.0/24 metric 545\n192.168.46.0/30",
+                    "route": "192.168.40.0/24 dev e556 metric 545\n192.168.46.0/30",
                     "route6": "a:b:c:f::/64",
                     "rule": None,
                     "rule6": None,
@@ -2786,9 +2786,11 @@ class TestValidator(Python26CompatTestCase):
                         "DEVICE": "e556",
                     },
                     "keys": None,
-                    "route": "192.168.40.0/24 metric 545\n192.168.46.0/30\n"
-                    "192.168.45.0/24 metric 545\n",
-                    "route6": "a:b:c:f::/64\na:b:c:d::/64\n",
+                    "route": "192.168.40.0/24 dev e556 metric 545\n"
+                    "192.168.46.0/30\n"
+                    "192.168.45.0/24 dev e556 metric 545\n"
+                    "192.168.46.0/30 dev e556\n",
+                    "route6": "a:b:c:f::/64\na:b:c:d::/64 dev e556\n",
                     "rule": None,
                     "rule6": None,
                 }
